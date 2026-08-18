@@ -37,6 +37,36 @@ def imageAnalysis(image: np.ndarray) -> None:
     print("=" * 40)
 
 def denoiseAndSmoothImage(image: np.ndarray, method: str = "Bilateral", **kwargs) -> np.ndarray:
+    """Apply denoising, smoothing, or sharpening filters to an image.
+
+    Processes the input image using selected spatial filtering algorithms from
+    OpenCV. Hyperparameters for specific filters can be configured via keyword
+    arguments.
+
+    Args:
+        image (np.ndarray): Input image as a NumPy array (Grayscale or BGR).
+        method (str, optional): The filtering technique to apply. Supported
+            options are 'Gaussian', 'Bilateral', 'Median', and 'Sharpen'.
+            Defaults to 'Bilateral'.
+        **kwargs: Additional filter-specific parameters:
+            - ksize (tuple[int, int] or int, optional): Kernel size. A tuple of
+              two odd integers for 'Gaussian' (defaults to (9, 9)), or an odd
+              integer for 'Median' (defaults to 5).
+            - d (int, optional): Diameter of each pixel neighborhood used during
+              filter application in 'Bilateral'. Defaults to 15.
+            - sigma_color (float, optional): Filter sigma in the color space for
+              'Bilateral'. Defaults to 100.
+
+    Returns:
+        np.ndarray: Filtered image array matching the shape and data type of
+            the input.
+
+    Example:
+        >>> img = cv2.imread("data/input.png")
+        >>> smooth_img = denoiseAndSmoothImage(img, method="Gaussian", ksize=(5, 5))
+        >>> bilateral_img = denoiseAndSmoothImage(img, method="Bilateral", d=9, sigma_color=75)
+    """
+    
     if method == "Gaussian":
         ksize = kwargs.get("ksize", (9, 9))
         return cv2.GaussianBlur(image, ksize, 0)
@@ -44,7 +74,7 @@ def denoiseAndSmoothImage(image: np.ndarray, method: str = "Bilateral", **kwargs
     elif method == "Bilateral":
         d = kwargs.get("d", 15)
         sigma_color = kwargs.get("sigma_color", 100)
-        return cv2.bilateralFilter(image, d=d, sigmaColor=sigma_color, sigmaSpace=sigma_color)
+        return cv2.bilateralFilter(image, d = d, sigmaColor=sigma_color, sigmaSpace = sigma_color)
         
     elif method == "Median":
         ksize = kwargs.get("ksize", 5)
@@ -52,13 +82,37 @@ def denoiseAndSmoothImage(image: np.ndarray, method: str = "Bilateral", **kwargs
         
     elif method == "Sharpen":
         kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-        return cv2.filter2D(src=image, ddepth=-1, kernel=kernel)
+        return cv2.filter2D(src = image, ddepth = -1, kernel = kernel)
         
     return image
 
 
 def edgeDetection(image: np.ndarray, method: str = "canny") -> np.ndarray:
-    # Chuẩn hóa ảnh về Grayscale nếu là ảnh màu
+    """Detect edges in an image using specified edge detection algorithms.
+
+    Converts the input image to grayscale if it is a color image (3-channel BGR),
+    then applies the selected edge detection filter.
+
+    Args:
+        image (np.ndarray): Input image as a NumPy array. Can be a 2D grayscale
+            array (H, W) or a 3D BGR color array (H, W, C).
+        method (str, optional): The edge detection algorithm to apply.
+            Supported methods are 'canny', 'sobel', and 'prewitt'.
+            Case-insensitive. Defaults to 'canny'.
+
+    Returns:
+        np.ndarray: A 2D uint8 NumPy array representing the detected edge map.
+
+    Raises:
+        ValueError: If `method` is not one of 'canny', 'sobel', or 'prewitt'.
+
+    Example:
+        >>> img = cv2.imread("data/dora.png")
+        >>> sobel_edges = edgeDetection(img, method = "sobel")
+        >>> print(sobel_edges.shape)
+        (2160, 3840)
+    """
+
     if len(image.shape) == 3:
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     else:
@@ -95,15 +149,14 @@ if __name__ == "__main__":
         image = cv2.imread(image_path)
         imageAnalysis(image)
 
-        # Test các filter
         canny_edges = edgeDetection(image, method="canny")
         sobel_edges = edgeDetection(image, method="sobel")
         prewitt_edges = edgeDetection(image, method="prewitt")
 
-        cv2.imshow("image",prewitt_edges)
-        cv2.waitKey(0)
+        # cv2.imshow("image",prewitt_edges)
+        # cv2.waitKey(0)
 
-        print("Edge detection executed successfully.")
+        print(f"Edge detection has {sobel_edges.shape} executed successfully.")
     else:
         print("No .png files found in directory.")
 
