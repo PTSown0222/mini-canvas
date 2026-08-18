@@ -1,0 +1,26 @@
+# --- Python Virtual Environments ---
+.venv/
+env/
+venv/
+ENV/
+
+# --- Python Bytecode & Cache ---
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+models/
+
+# --- AI Weights, Checkpoints & Datasets (Rất nặng, không đưa lên git) ---
+*.pt
+*.pth
+*.weights
+*.onnx
+
+# --- Environment Variables & Secrets ---
+.env
+.env.*
+*.log
+
+# --- IDE & OS Specific Files ---
+.vscode/
+.DS_Store

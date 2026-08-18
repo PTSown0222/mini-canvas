@@ -1,0 +1,11 @@
+[project]
+name = "minicanvas"
+version = "0.1.0"
+description = "Phuong The Son"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.5.2",
+    "opencv-python>=5.0.0.93",
+    "streamlit>=1.61.1",
+]
