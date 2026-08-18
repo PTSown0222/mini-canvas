@@ -25,12 +25,11 @@
 </p>
 
 > Demo 2: Edge Detection
-
 <p align="center">
   <img src="assets/demo2.png" alt="Mini Canvas Demo 2" width="800"/>
 </p>
 
-> Demo 3: Object Detection (coming soon)
+> ⏳ *Demo 3: Object Detection (Coming soon)*
 
 ---
 ## 🌟 Key Features
