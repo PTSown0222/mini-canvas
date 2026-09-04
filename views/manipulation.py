@@ -28,7 +28,6 @@ if category == "Denoise / Smoothing":
         ["Gaussian", "Bilateral", "Median", "Sharpen"],
         key= " enhance_method"
     )
-
     if method == "Gaussian":
         k_size = st.sidebar.slider("Kernel Size", min_value=3, max_value=31, value=9, step=2)
         filter_params["ksize"] = (k_size, k_size)

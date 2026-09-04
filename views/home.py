@@ -18,7 +18,7 @@ if uploaded_file is not None:
 
 if st.session_state.current_image is not None:
     st.success(f"working with file: **{st.session_state.image_name}**")
-    img_width = st.slider("Resize Images)", min_value=200, max_value=800, value=350, step=50)
+    img_width = st.slider("Resize Images)", min_value = 200, max_value = 800, value= 350, step=50)
     col_left, col_center, col_right = st.columns([1, 2, 1])
 
     with col_center:

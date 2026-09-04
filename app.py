@@ -34,13 +34,16 @@ if "image_name" not in st.session_state:
 
 home_p = st.Page("./views/home.py", title="Home Page and Upload", icon="🏠", default=True)
 enhance_p = st.Page("./views/manipulation.py", title="Enhance Image", icon="📷")
+
+# Navigate to models
+yolo11n_car_detection = st.Page("./views/yolo_detect_view.py", title="Omni YOLO Detection", icon="📦")
+# faster_rcnn_detection = 
 # yolo_det_p = st.Page("views/yolo_detect_view.py", title="YOLO Detection", icon="📦")
-# yolo_pose_p = st.Page("views/yolo_pose_view.py", title="YOLO Pose", icon="🤸")
-# yolo_seg_p = st.Page("views/yolo_seg_view.py", title="YOLO Segmentation", icon="🎭")
 
 page = st.navigation({
     "Home Page": [home_p],
     "Processing Image": [enhance_p],
+    "Predict": [yolo11n_car_detection]
 })
 
 page.run()
