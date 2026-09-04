@@ -29,7 +29,15 @@
   <img src="assets/demo2.png" alt="Mini Canvas Demo 2" width="800"/>
 </p>
 
-> ⏳ *Demo 3: Object Detection (Coming soon)*
+> Demo 3: Car Detection (Finetune)
+<p align="center">
+  <img src="assets/demo3.jpg" alt="Mini Canvas Demo 3" width="800"/>
+</p>
+
+> Demo 4: UI/UX segmentation and object detections
+<p align="center">
+  <img src="assets/demo4.png" alt="Mini Canvas Demo 4" width="800"/>
+</p>
 
 ---
 ## 🌟 Key Features
@@ -49,26 +57,43 @@
 
 ```text
 miniCanvas/
-├── assets/
+├── assets/                       # Sample images for testing & demo
 │   ├── demo1.png
-|   └── demo2.png
-|
-├── data/                  # Sample test images
-├── models/                # Pre-trained YOLO11 weights (.pt)
-│   ├── yolo11n.pt
-│   └── yolo11n-seg.pt
-│   
-├── src/                   # Core logic and CV functions
-│   ├── enhance_image.py   # OpenCV filtering algorithms
-│   └── yolo_service.py    # Model loader and inference engine (coming soon)
-├── views/                 # Streamlit page views
-│   ├── home.py            # Upload hub and landing view
-│   └── manipulation.py    # Enhancement and edge detection view
-├── app.py                 # Main entrypoint and router
-├── Dockerfile             # Container configuration
-├── pyproject.toml         # Project dependencies & metadata
-├── uv.lock                # Locked dependency tree
-└── run.sh                 # Startup bash script
+│   ├── demo2.png
+│   ├── demo3.jpg
+│   └── demo4.png
+├── data/                         # Datasets directory (car_dataset: train/valid/test)
+├── models/                       # Checkpoints & model weights
+│   ├── yolo11n.pt                # Base COCO detection model
+│   ├── yolo11n-seg.pt            # Base COCO instance segmentation model
+│   ├── yolo11n_car_detect_20ep.pt# Fine-tuned car detection model
+│   └── fasterrcnn_mobilenet_v3.pt# Faster R-CNN model weights
+├── notebook/                     # Jupyter notebooks for experiments & training
+├── outputs/                      # Training artifacts, charts & evaluation metrics
+│   └── car_detection_finetune/
+│       ├── BoxF1_curve.png
+│       ├── BoxP_curve.png
+│       ├── BoxPR_curve.png
+│       ├── BoxR_curve.png
+│       ├── confusion_matrix.png
+│       └── results.csv
+├── script/                       # Standalone shell execution scripts
+│   ├── run.sh
+│   └── run_faster_rcnn.sh
+├── src/                          # Core processing modules
+│   ├── faster_rcnn/              # Faster R-CNN pipeline implementation
+│   ├── yolo11/                   # YOLO11 training, validation & inference scripts
+│   ├── basic_adjust.py           # Basic image operations (contrast, brightness)
+│   └── enhance_image.py          # Classical CV filters (denoise, smoothing, edges)
+├── views/                        # Streamlit multi-page UI views
+│   ├── home.py                   # Image upload hub & landing page
+│   ├── manipulation.py           # Image filtering & enhancement view
+│   └── yolo_detect_view.py       # YOLO11 detection & instance segmentation view
+├── app.py                        # Main Streamlit router & entrypoint
+├── Dockerfile                    # Containerization config
+├── Makefile                      # Command shortcuts (build, run, infer)
+├── pyproject.toml                # Project metadata & dependency definitions
+└── uv.lock                       # Locked dependency tree (managed with uv)
 ```
 ## 🚀 Quick Start
 Ensure you have uv installed on your system:
@@ -95,7 +120,7 @@ uv sync
 
 Run the application
 ```shell
-bash run.sh
+bash script/run.sh
 # Or directly via uv:
 uv run streamlit run app.py
 ```
@@ -104,14 +129,20 @@ uv run streamlit run app.py
 
 - [x] Build mini canvas to enhance quality images
 - [ ] Reads and Conducts this process: `https://docs.astral.sh/uv/guides/integration/docker/installing-uv`
-- [ ] Add more features to enhance quality images such as brightness,...
-- [ ] Training and Inference Yolo Model
+- [x] Add more features to enhance quality images such as brightness,...
+- [x] Training and Inference Yolo Model
+- [X] Build UI UX
+- [ ] Training and Inference Faster-RCNN (MobileNet Backbone)
+- [ ] Write API
 - [ ] Deploy Model with web apps
 
 #### Requirements
 ```text
+uv add torch>=2.13.0
 uv add opencv-python-headless
 uv add numpy>=2.5.2
 uv add streamlit>=1.61.1
+uv add ultralytics>=8.4.138
+uv add torchvision>=0.28.0
 ```
 
