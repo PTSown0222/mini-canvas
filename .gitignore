@@ -24,3 +24,4 @@ models/
 # --- IDE & OS Specific Files ---
 .vscode/
 .DS_Store
+outputs/

@@ -1,20 +1,34 @@
-FROM python:3.12-slim-trixie
+FROM python:3.12-slim
 
+# Ngăn Python tạo bytecode .pyc và bật unbuffered log
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    U2NET_HOME=/app/models
+
+# Cài đặt thư viện C/C++ runtime cho OpenCV và công cụ tải uv
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Cài đặt uv package manager trực tiếp từ binary chính thức
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-WORKDIR /src
+WORKDIR /app
 
-# install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential
+# Copy các file cấu hình dependency để tận dụng Docker layer cache
+COPY pyproject.toml uv.lock ./
 
-# copy source and sync
-COPY . /src
+# Đồng bộ cài đặt dependencies hệ thống bằng uv (không tạo .venv bên trong image)
+RUN uv sync --frozen --no-dev --no-install-project
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-editable
+# Copy toàn bộ mã nguồn dự án vào container
+COPY . .
 
+# Khai báo port mặc định của Streamlit
+EXPOSE 8501
 
-COPY --from=builder /app/.venv /app/.venv
-COPY . /src
-
-CMD ["uv", "run", "my_app"]
+# Lệnh khởi chạy ứng dụng
+CMD ["uv", "run", "streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

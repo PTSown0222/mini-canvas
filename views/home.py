@@ -13,6 +13,8 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     file_bytes = np.frombuffer(uploaded_file.getvalue(), dtype=np.uint8)
     opencv_image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+    if st.session_state.get("image_name") != uploaded_file.name:
+        st.session_state.pop("bg_removed_result", None)
     st.session_state.current_image = opencv_image
     st.session_state.image_name = uploaded_file.name
 

@@ -1,37 +1,24 @@
-# Git & Documentation
-.git
-.gitignore
-README.md
-docs/
-
-# Python Virtual Environments
+# 1. Virtual Environment & Python bytecode
 .venv/
-env/
-venv/
-
-# Python Cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.pytest_cache/
-.ruff_cache/
-.mypy_cache/
-.ipynb_checkpoints/
 
-# AI Weights & Datasets
-*.pt
-*.weights
-*.onnx
+# 2. Git & OS metadata
+.git/
+.gitignore
+.DS_Store
+
+# 3. Development / Training notes (không cần thiết để chạy web)
+TRAINING.md
+notebook/
+notebooks/
+
+# 4. Heavy Data & Temp outputs
 data/
-*.zip
-*.tar.gz
+outputs/
+assets/raw/
 
-# Environment variables & Logs
-.env
-*.log
-
-# Docker itself
-Dockerfile
-docker-compose.yml
-.dockerignore
+# 5. Shell scripts thừa (chỉ giữ nếu container thực sự cần gọi)
+script/

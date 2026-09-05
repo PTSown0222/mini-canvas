@@ -6,9 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "numpy>=2.5.2",
+    "onnxruntime>=1.29.0",
     "opencv-python>=5.0.0.93",
+    "rembg>=2.0.83",
     "streamlit>=1.61.1",
+    "supervision>=0.30.2",
     "torch>=2.13.0",
+    "torchmetrics>=1.9.0",
     "torchvision>=0.28.0",
     "ultralytics>=8.4.138",
 ]

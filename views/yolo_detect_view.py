@@ -33,7 +33,6 @@ model_choice = st.sidebar.selectbox(
         "🎭 Instance Segmentation"
     ]
 )
-
 if "Finetune" in model_choice:
     weights_target = "models/yolo11n_car_detect_20ep.pt"
     if not Path(weights_target).exists():
@@ -47,12 +46,12 @@ st.sidebar.caption(f"Loaded weights: `{weights_target}`")
 model, device = load_yolo_model(weights_target)
 conf_thresh = st.sidebar.slider("Confidence Threshold", min_value=0.05, max_value=1.0, value=0.25, step=0.05)
 iou_thresh = st.sidebar.slider("IoU Threshold (NMS)", min_value=0.1, max_value=1.0, value=0.45, step=0.05)
-run_btn = st.sidebar.button("🚀 Run Detection", type="primary", use_container_width = True)
+run_btn = st.sidebar.button("🚀 Run Detection", type="primary", width="stretch")
 col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Input Image")
-    st.image(image, channels="BGR", use_container_width=True)
+    st.image(image, channels="BGR", width="stretch")
 
 if run_btn:
     with st.spinner("Model is running inference..."):
@@ -70,11 +69,11 @@ if run_btn:
             h, w = input_image.shape[:2]
 
             colors = [
-                (255, 100, 0),   # Xanh dương
-                (0, 200, 100),   # Xanh lục
-                (200, 50, 255),  # Tím hồng
-                (0, 165, 255),   # Cam
-                (50, 220, 255),  # Vàng
+                (255, 100, 0),   
+                (0, 200, 100),   
+                (200, 50, 255),  
+                (0, 165, 255),   
+                (50, 220, 255),
             ]
 
             masks_tensor = res.masks.data.cpu().numpy()
@@ -125,7 +124,7 @@ if run_btn:
 
         with col2:
             st.subheader(f"Result: Found {len(res.boxes)} object(s)")
-            st.image(annotated_img, channels="BGR", use_container_width=True)
+            st.image(annotated_img, channels="BGR", width="stretch")
             is_success, buffer = cv2.imencode(".png", annotated_img)
             if is_success:
                 st.download_button(
@@ -133,7 +132,7 @@ if run_btn:
                     data=buffer.tobytes(),
                     file_name="yolo11_detected.png",
                     mime="image/png",
-                    use_container_width=True
+                    width="stretch"
                 )
 
         st.divider()
@@ -154,7 +153,7 @@ if run_btn:
                     "Has Mask": "✅" if has_masks else "❌"
                 }
                 data.append(row)
-            st.dataframe(data, use_container_width=True)
+            st.dataframe(data, width="stretch")
         else:
             st.info("No objects detected. Try lowering the Confidence Threshold.")
 else:
